@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Feed Me</string>
+
+
+    <!-- Recipes URL -->
+    <string name="recipes_url">https://d17h27t6h515a5.cloudfront.net/topher/2017/March/58d1537b_baking/baking.json</string>
+
+    <!-- JSON KEYS -->
+    <string name="recipe_id">id</string>
+    <string name="recipe_name">name</string>
+    <string name="recipe_ingredients">ingredients</string>
+    <string name="recipe_steps">steps</string>
+    <string name="recipe_servings">servings</string>
+    <string name="recipe_image_url">image</string>
+
+    <string name="ingredient_quantity">quantity</string>
+    <string name="ingredient_measure">measure</string>
+    <string name="ingredient_name">ingredient</string>
+
+    <string name="step_id">id</string>
+    <string name="step_short_description">shortDescription</string>
+    <string name="step_description">description</string>
+    <string name="step_video_url">videoURL</string>
+    <string name="step_thumbnail_url">thumbnailURL</string>
+</resources>
