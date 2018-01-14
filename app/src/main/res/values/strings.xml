@@ -22,4 +22,6 @@
     <string name="step_description">description</string>
     <string name="step_video_url">videoURL</string>
     <string name="step_thumbnail_url">thumbnailURL</string>
+
+
 </resources>
