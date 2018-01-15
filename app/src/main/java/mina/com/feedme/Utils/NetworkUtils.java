@@ -15,7 +15,7 @@ import java.net.URL;
 /**
  * Created by Mena on 1/11/2018.
  */
-
+// make a separate class for the networking is better than check it manually in every activity like i have made in the movie app
 public class NetworkUtils {
     private NetworkUtils(){
     }

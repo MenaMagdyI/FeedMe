@@ -1,8 +1,10 @@
 package mina.com.feedme;
 
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -12,14 +14,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import mina.com.feedme.Adapter.RecipesAdapter;
-import mina.com.feedme.Data.Recipe;
+import mina.com.feedme.Model.Recipe;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,8 +35,7 @@ public class MainFragment extends Fragment implements RecipesAdapter.RecipeOnCli
     RecipesAdapter recipesAdapter;
 
     RecyclerView recipesRecyclerView;
-    @BindView(R.id.empty_recipes)
-    View emptyListView;
+    TextView emptyListView;
 
 
     public MainFragment() {
@@ -47,12 +47,14 @@ public class MainFragment extends Fragment implements RecipesAdapter.RecipeOnCli
     public View onCreateView(LayoutInflater inflater,@Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        ButterKnife.bind(this, rootView);
 
         mRecipes = new ArrayList<>();
-        recipesRecyclerView = (RecyclerView) getActivity().findViewById(R.id.fragment_recycler_view);
+        recipesRecyclerView = (RecyclerView) rootView.findViewById(R.id.fragment_recycler_view);
+        emptyListView = (TextView) rootView.findViewById(R.id.empty_recipes);
         Log.i("FragmentActivity","7777777777777");
 
+
+        //stackoverflow suggestion !-- must edit the dimens files
         if (getResources().getBoolean(R.bool.isTablet)) {
 
             Log.i("FragmentActivity","88888888888888888");
@@ -69,7 +71,7 @@ public class MainFragment extends Fragment implements RecipesAdapter.RecipeOnCli
             recipesRecyclerView.setLayoutManager(layoutManager);
             Log.i("FragmentActivity","999999999999999999999");
         }
-        Log.i("mainActivity","after all");
+        Log.i("FragmentActivity","after all");
 
         recipesAdapter = new RecipesAdapter(mRecipes, this);
         recipesRecyclerView.setAdapter(recipesAdapter);
@@ -97,6 +99,13 @@ public class MainFragment extends Fragment implements RecipesAdapter.RecipeOnCli
 
     @Override
     public void onClick(int position) {
-        //will add some action here later!
+        Recipe selectedRecipe = mRecipes.get(position);
+        Intent detailIntent = new Intent(getContext(), RecipeActivity.class);
+        detailIntent.putExtra(RECIPE_KEY, selectedRecipe);
+        detailIntent.putParcelableArrayListExtra(RECIPE_STEPS_KEY, (ArrayList<? extends Parcelable>) selectedRecipe.getmSteps());
+        detailIntent.putParcelableArrayListExtra(RECIPE_INGREDIENTS_KEY, (ArrayList<? extends Parcelable>) selectedRecipe.getmIngredients());
+
+        startActivity(detailIntent);
+
     }
 }

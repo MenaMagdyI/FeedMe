@@ -15,23 +15,18 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import mina.com.feedme.Data.Recipe;
+import mina.com.feedme.Model.Recipe;
 import mina.com.feedme.Utils.JsonUtils;
 import mina.com.feedme.Utils.NetworkUtils;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Recipe>> {
 
 
-    Context context;
-    @BindView(R.id.loading_indicator)
+    Context mContext;
     ProgressBar loadingIndicator;
-
+    MainFragment mainFragment;
     private List<Recipe> mRecipes;
-    public static final int RECIPES_LOADER_ID = 11;
-
-    MainFragment mainRecipesFragment;
+    public static final int RECIPES_LOADER_ID = 1;
 
 
     @Override
@@ -39,24 +34,22 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.i("MainActivity","just Created !!!!!");
-        ButterKnife.bind(this);
-        context = MainActivity.this;
-
+        mContext = MainActivity.this;
         mRecipes = new ArrayList<>();
-        mainRecipesFragment = new MainFragment();
+        mainFragment = new MainFragment();
 
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.container, mainRecipesFragment)
-                .commit();
+        loadingIndicator = (ProgressBar) findViewById(R.id.loading_indicator);
+
+        getSupportFragmentManager().beginTransaction().add(R.id.container, mainFragment).commit();
 
 
-        if (NetworkUtils.isConnected(context)) {
+        if (NetworkUtils.isConnected(mContext)) {
             getSupportLoaderManager().initLoader(RECIPES_LOADER_ID, null, this);
             Log.i("MainActivity","2222222222222222");
         } else {
             Log.i("MainActivity","3333333333333333");
             loadingIndicator.setVisibility(View.GONE);
-            Toast.makeText(context,"NO internet Connection", Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext,"NO internet Connection", Toast.LENGTH_LONG).show();
 
         }
 
@@ -65,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public Loader<List<Recipe>> onCreateLoader(int id, Bundle args) {
-        return new AsyncTaskLoader<List<Recipe>>(context) {
+        return new AsyncTaskLoader<List<Recipe>>(mContext) {
             @Override
             protected void onStartLoading() {
                 super.onStartLoading();
@@ -78,10 +71,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             public List<Recipe> loadInBackground() {
 
                 Log.i("MainActivity","555555555555555555555");
-                String recipesUrlStr = getString(R.string.recipes_url);
-                URL recipesUrl = NetworkUtils.getUrl(recipesUrlStr);
+                String recipes_Url = getString(R.string.recipes_url);
+                URL recipesUrl = NetworkUtils.getUrl(recipes_Url);
                 String recipesJsonResponse = NetworkUtils.getJsonResponse(recipesUrl);
-                return JsonUtils.extractRecipesFromJson(recipesJsonResponse, context);
+                return JsonUtils.extractRecipesFromJson(recipesJsonResponse, mContext);
             }
         };
     }
@@ -93,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Log.i("mainActivity","91919191919191919");
 
         loadingIndicator.setVisibility(View.GONE);
-        mainRecipesFragment.resetFragmentArray(mRecipes);
+        mainFragment.resetFragmentArray(mRecipes);
         Log.i("MainActivity","66666666666666666");
 
     }

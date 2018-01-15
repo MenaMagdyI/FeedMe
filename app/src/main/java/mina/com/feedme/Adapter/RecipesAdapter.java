@@ -1,5 +1,9 @@
 package mina.com.feedme.Adapter;
 
+import com.squareup.picasso.Picasso;
+import java.util.List;
+import mina.com.feedme.Model.Recipe;
+import mina.com.feedme.R;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,15 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.squareup.picasso.Picasso;
-
-import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import mina.com.feedme.Data.Recipe;
-import mina.com.feedme.R;
 
 /**
  * Created by Mena on 1/14/2018.
@@ -60,32 +55,27 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.MyRecipe
 
 
     class MyRecipesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        @BindView(R.id.R_title_id)
-        TextView recipeNameTextView;
-        @BindView(R.id.R_image_id)
-        ImageView recipeImageView;
 
-
-
-
+        TextView mRecipeName;
+        ImageView mRecipePhoto;
 
         public MyRecipesViewHolder(View itemView) {
             super(itemView);
-
-            ButterKnife.bind(this, itemView);
+            mRecipeName = (TextView) itemView.findViewById(R.id.R_title_id);
+            mRecipePhoto = (ImageView) itemView.findViewById(R.id.R_image_id);
 
             itemView.setOnClickListener(this);
         }
 
         public void bind(int position) {
             Recipe currentRecipe = RecipesList.get(position);
-            recipeNameTextView.setText(currentRecipe.getmName());
+            mRecipeName.setText(currentRecipe.getmName());
 
-            Picasso.with(recipeImageView.getContext())
+            Picasso.with(mRecipePhoto.getContext())
                     .load(Uri.parse(currentRecipe.getmImageUrl()))
                     .placeholder(R.drawable.content)
                     .error(R.drawable.content)
-                    .into(recipeImageView);
+                    .into(mRecipePhoto);
         }
 
         @Override

@@ -1,4 +1,4 @@
-package mina.com.feedme.Data;
+package mina.com.feedme.Model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

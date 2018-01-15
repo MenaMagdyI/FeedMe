@@ -9,9 +9,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import mina.com.feedme.Data.Ingredient;
-import mina.com.feedme.Data.Recipe;
-import mina.com.feedme.Data.Step;
+import mina.com.feedme.Model.Ingredient;
+import mina.com.feedme.Model.Recipe;
+import mina.com.feedme.Model.Step;
 import mina.com.feedme.R;
 
 /**
