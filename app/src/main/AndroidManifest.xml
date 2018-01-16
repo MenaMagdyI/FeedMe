@@ -21,6 +21,11 @@
         </activity>
         <activity android:name=".RecipeActivity" />
         <activity android:name=".StepActivity"></activity>
+
+        <provider
+            android:authorities="mina.com.feedme"
+            android:name=".DataBase.generated.RecipesContentProvider"
+            android:exported="true"/>
     </application>
 
 </manifest>

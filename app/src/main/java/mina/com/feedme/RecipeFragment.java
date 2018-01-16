@@ -1,6 +1,7 @@
 package mina.com.feedme;
 
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,13 +13,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.github.ivbaranov.mfb.MaterialFavoriteButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import mina.com.feedme.Adapter.IngredientsAdapter;
 import mina.com.feedme.Adapter.StepsAdapter;
+import mina.com.feedme.DataBase.RecipesContentProvider;
+import mina.com.feedme.DataBase.RecipesContract;
 import mina.com.feedme.Model.Ingredient;
+import mina.com.feedme.Model.Recipe;
 import mina.com.feedme.Model.Step;
 
 /**
@@ -44,12 +51,14 @@ public class RecipeFragment extends Fragment implements StepsAdapter.StepOnClick
     RecyclerView stepsRecyclerView;
 
     private String mRecipeTitle;
+    private boolean mDBstatus;
 
     private List<Ingredient> mIngredients;
     private List<Step> mSteps;
 
     private IngredientsAdapter mIngredientsAdapter;
     private StepsAdapter mStepsAdapter;
+    private Recipe mCurrentRecipe;
 
     private UpdateStepFragment updateFragment;
     private int mLastClickedPosition;
@@ -99,6 +108,38 @@ public class RecipeFragment extends Fragment implements StepsAdapter.StepOnClick
         recipeTitleTextView = (TextView) rootView.findViewById(R.id.recipe_title);
         ingredientsRecyclerView = (RecyclerView) rootView.findViewById(R.id.ingredients_recycler_view);
         stepsRecyclerView = (RecyclerView) rootView.findViewById(R.id.steps_recycler_view);
+        MaterialFavoriteButton materialFavoriteButtonNice = (MaterialFavoriteButton) rootView.findViewById(R.id.favorite_nice);
+
+
+        materialFavoriteButtonNice.setFavorite(mDBstatus, !mDBstatus);
+        final String[] temp = new String[1];
+        materialFavoriteButtonNice.setOnFavoriteChangeListener(
+                new MaterialFavoriteButton.OnFavoriteChangeListener() {
+                    @Override
+                    public void onFavoriteChanged(MaterialFavoriteButton buttonView, boolean favorite) {
+                        if (favorite) {
+                            changeDatabaseIngredient();
+                            temp[0] = "favorite it!";
+
+
+                        } else {
+                            getActivity().getApplicationContext().getContentResolver().delete(RecipesContentProvider.Ingredients.INGREDIENTS, null, null);
+                            temp[0] = "Un favorite it!";
+                        }
+                    }
+                });
+
+
+        materialFavoriteButtonNice.setOnFavoriteAnimationEndListener(
+                new MaterialFavoriteButton.OnFavoriteAnimationEndListener() {
+                    @Override
+                    public void onAnimationEnd(MaterialFavoriteButton buttonView, boolean favorite) {
+
+
+                        Toast.makeText(getContext(), temp[0], Toast.LENGTH_SHORT).show();
+
+                    }
+                });
 
         recipeTitleTextView.setText(mRecipeTitle);
 
@@ -113,6 +154,11 @@ public class RecipeFragment extends Fragment implements StepsAdapter.StepOnClick
         return rootView;
     }
 
+    public void updateStatus (boolean status){
+        mDBstatus = status;
+    }
+
+
     public void setIngredients(List<Ingredient> ingredients) {
         mIngredients.addAll(ingredients);
         mIngredientsAdapter.notifyDataSetChanged();
@@ -121,6 +167,32 @@ public class RecipeFragment extends Fragment implements StepsAdapter.StepOnClick
     public void setSteps(List<Step> steps) {
         mSteps.addAll(steps);
         mStepsAdapter.notifyDataSetChanged();
+    }
+
+    public void getRecipeObject(Recipe object){
+        mCurrentRecipe = object;
+
+    }
+
+    private void insertIntoProvider() {
+        ContentValues[] cvs = new ContentValues[mIngredients.size()];
+        Log.i("insertIntoProvider",mIngredients.size()+"");
+        for (int i=0 ; i< mIngredients.size() ; i++) {
+            cvs[i] = new ContentValues();
+            cvs[i].put(RecipesContract.IngredientEntry.RECIPE_ID, mCurrentRecipe.getmId());
+            cvs[i].put(RecipesContract.IngredientEntry.RECIPE_NAME, mCurrentRecipe.getmName());
+            cvs[i].put(RecipesContract.IngredientEntry.INGREDIENT_NAME, mIngredients.get(i).getmIngredient());
+            cvs[i].put(RecipesContract.IngredientEntry.MEASURE, mIngredients.get(i).getmMeasure());
+            cvs[i].put(RecipesContract.IngredientEntry.QUANTITY, mIngredients.get(i).getmQuantity());
+        }
+        getActivity().getApplicationContext().getContentResolver().bulkInsert(RecipesContentProvider.Ingredients.INGREDIENTS, cvs);
+    }
+
+
+    private void changeDatabaseIngredient(){
+        getActivity().getApplicationContext().getContentResolver().delete(RecipesContentProvider.Ingredients.INGREDIENTS, null, null);
+        insertIntoProvider();
+
     }
 
 

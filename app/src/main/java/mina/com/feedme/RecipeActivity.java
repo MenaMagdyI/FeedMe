@@ -1,6 +1,7 @@
 package mina.com.feedme;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +10,8 @@ import android.view.View;
 
 import java.util.List;
 
+import mina.com.feedme.DataBase.RecipesContentProvider;
+import mina.com.feedme.DataBase.RecipesContract;
 import mina.com.feedme.Model.Ingredient;
 import mina.com.feedme.Model.Recipe;
 import mina.com.feedme.Model.Step;
@@ -17,7 +20,7 @@ public class RecipeActivity extends AppCompatActivity {
 
     private StepFragment stepFragment;
     private List<Step> steps;
-    private boolean mIsInWidget;
+    private boolean existInDB;
     private Recipe mCurrentRecipe;
     private List<Ingredient> mIngredients;
     private Menu mRecipeMenu;
@@ -30,11 +33,21 @@ public class RecipeActivity extends AppCompatActivity {
         final Intent sentIntent = getIntent();
 
         mCurrentRecipe = sentIntent.getParcelableExtra(MainFragment.RECIPE_KEY);
-
         mIngredients = sentIntent.getParcelableArrayListExtra(MainFragment.RECIPE_INGREDIENTS_KEY);
         steps = sentIntent.getParcelableArrayListExtra(MainFragment.RECIPE_STEPS_KEY);
 
         RecipeFragment recipeFragment = new RecipeFragment();
+        String selection = RecipesContract.IngredientEntry.RECIPE_ID + "=?";
+        String[] selectionArgs = new String[]{String.valueOf(mCurrentRecipe.getmId())};
+        Cursor cursor = getContentResolver().query(RecipesContentProvider.Ingredients.INGREDIENTS, null, selection, selectionArgs, null);
+        if (cursor != null && cursor.getCount() > 0) {
+            existInDB = true;
+        } else {
+            existInDB = false;
+        } if (cursor != null) cursor.close();
+
+        recipeFragment.updateStatus(existInDB);
+        recipeFragment.getRecipeObject(mCurrentRecipe);
         Log.i("RRRRRRRRRR",mCurrentRecipe.getmName());
         recipeFragment.setRecipeTitle(mCurrentRecipe.getmName());
 
@@ -44,6 +57,9 @@ public class RecipeActivity extends AppCompatActivity {
 
         recipeFragment.setIngredients(mIngredients);
         recipeFragment.setSteps(steps);
+
+
+
 
         View tabletView = findViewById(R.id.tablet_fragment_step_container);
         if (tabletView != null) {
