@@ -52,7 +52,7 @@ public class RecipeActivity extends AppCompatActivity {
         recipeFragment.setRecipeTitle(mCurrentRecipe.getmName());
 
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_recipe_container, recipeFragment)
+                .replace(R.id.fragment_recipe_container, recipeFragment)
                 .commit();
 
         recipeFragment.setIngredients(mIngredients);

@@ -6,6 +6,8 @@ import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RemoteViews;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,6 +60,10 @@ public class RecipeFragment extends Fragment implements StepsAdapter.StepOnClick
     private String mRecipeTitle;
     private boolean mDBstatus;
 
+    public static int scrollX = 0;
+    public static int scrollY = -1;
+    ScrollView mScrollview;
+
     private List<IngredientModel> mIngredients;
     private List<StepModel> mSteps;
 
@@ -66,6 +73,11 @@ public class RecipeFragment extends Fragment implements StepsAdapter.StepOnClick
 
     private UpdateStepFragment updateFragment;
     private int mLastClickedPosition;
+
+    LinearLayoutManager stepsLayoutManager;
+    LinearLayoutManager ingredientsLayoutManager;
+    Parcelable mListState;
+    Parcelable mListState2;
 
     @Override
     public void onClick(int position) {
@@ -106,13 +118,26 @@ public class RecipeFragment extends Fragment implements StepsAdapter.StepOnClick
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        scrollX = mScrollview.getScrollX();
+        scrollY = mScrollview.getScrollY();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_recipe, container, false);
         recipeTitleTextView = (TextView) rootView.findViewById(R.id.recipe_title);
         ingredientsRecyclerView = (RecyclerView) rootView.findViewById(R.id.ingredients_recycler_view);
         stepsRecyclerView = (RecyclerView) rootView.findViewById(R.id.steps_recycler_view);
+        mScrollview = (ScrollView) rootView.findViewById(R.id.mainScrollView);
         MaterialFavoriteButton materialFavoriteButtonNice = (MaterialFavoriteButton) rootView.findViewById(R.id.favorite_nice);
+
+        if (savedInstanceState != null){
+            mListState = savedInstanceState.getParcelable("state1");
+            mListState2 = savedInstanceState.getParcelable("state2");
+        }
 
 
         materialFavoriteButtonNice.setFavorite(mDBstatus, !mDBstatus);
@@ -148,11 +173,11 @@ public class RecipeFragment extends Fragment implements StepsAdapter.StepOnClick
 
         recipeTitleTextView.setText(mRecipeTitle);
 
-        LinearLayoutManager stepsLayoutManager = new LinearLayoutManager(getContext());
+        stepsLayoutManager = new LinearLayoutManager(getContext());
         stepsRecyclerView.setLayoutManager(stepsLayoutManager);
         stepsRecyclerView.setAdapter(mStepsAdapter);
 
-        LinearLayoutManager ingredientsLayoutManager = new LinearLayoutManager(getContext());
+        ingredientsLayoutManager = new LinearLayoutManager(getContext());
         ingredientsRecyclerView.setLayoutManager(ingredientsLayoutManager);
         ingredientsRecyclerView.setAdapter(mIngredientsAdapter);
 
@@ -221,6 +246,40 @@ public class RecipeFragment extends Fragment implements StepsAdapter.StepOnClick
 
         widgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_ingredients_list_view);
         widgetManager.updateAppWidget(appWidgetIds, remoteViews);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+
+        mListState = stepsLayoutManager.onSaveInstanceState();
+        mListState2 = ingredientsLayoutManager.onSaveInstanceState();
+        outState.putParcelable("state1", mListState);
+        outState.putParcelable("state2", mListState2);
+
+        outState.putIntArray("SCROLL_POSITION",
+                new int[]{mScrollview.getScrollX(), mScrollview.getScrollY()});
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (mListState != null) {
+            stepsLayoutManager.onRestoreInstanceState(mListState);
+        }
+
+        if (mListState2 != null){
+            ingredientsLayoutManager.onRestoreInstanceState(mListState);
+        }
+
+        mScrollview.post(new Runnable() {
+            @Override
+            public void run() {
+                mScrollview.scrollTo(scrollX, scrollY);
+            }
+        });
     }
 
 
