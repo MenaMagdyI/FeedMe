@@ -8,32 +8,32 @@ import android.os.Parcelable;
  */
 
 
-public class Ingredient implements Parcelable {
+public class IngredientModel implements Parcelable {
     private double mQuantity;
     private String mMeasure;
     private String mIngredient;
 
-    public Ingredient(double mQuantity, String mMeasure, String mIngredient) {
+    public IngredientModel(double mQuantity, String mMeasure, String mIngredient) {
         this.mQuantity = mQuantity;
         this.mMeasure = mMeasure;
         this.mIngredient = mIngredient;
     }
 
-    protected Ingredient(Parcel in) {
+    protected IngredientModel(Parcel in) {
         mQuantity = in.readDouble();
         mMeasure = in.readString();
         mIngredient = in.readString();
     }
 
-    public static final Creator<Ingredient> CREATOR = new Creator<Ingredient>() {
+    public static final Creator<IngredientModel> CREATOR = new Creator<IngredientModel>() {
         @Override
-        public Ingredient createFromParcel(Parcel in) {
-            return new Ingredient(in);
+        public IngredientModel createFromParcel(Parcel in) {
+            return new IngredientModel(in);
         }
 
         @Override
-        public Ingredient[] newArray(int size) {
-            return new Ingredient[size];
+        public IngredientModel[] newArray(int size) {
+            return new IngredientModel[size];
         }
     };
 

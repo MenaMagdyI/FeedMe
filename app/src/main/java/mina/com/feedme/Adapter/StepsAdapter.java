@@ -9,7 +9,7 @@ import android.widget.TextView;
 import java.util.List;
 
 
-import mina.com.feedme.Model.Step;
+import mina.com.feedme.Model.StepModel;
 import mina.com.feedme.R;
 
 /**
@@ -19,14 +19,14 @@ import mina.com.feedme.R;
 public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsViewHolder> {
 
 
-    private List<Step> mSteps;
+    private List<StepModel> mSteps;
     private StepOnClickListener mOnClickListener;
 
     public interface StepOnClickListener {
         void onClick(int position);
     }
 
-    public StepsAdapter(List<Step> mSteps, StepOnClickListener listener) {
+    public StepsAdapter(List<StepModel> mSteps, StepOnClickListener listener) {
         this.mSteps = mSteps;
         this.mOnClickListener = listener;
     }
@@ -56,7 +56,7 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsViewHol
         public StepsViewHolder(View itemView) {
             super(itemView);
 
-            stepShortDescription = (TextView) itemView.findViewById(R.id.step_short_description);
+            stepShortDescription = (TextView) itemView.findViewById(R.id.step_description);
             itemView.setOnClickListener(this);
         }
 

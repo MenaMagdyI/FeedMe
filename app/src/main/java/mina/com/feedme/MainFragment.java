@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mina.com.feedme.Adapter.RecipesAdapter;
-import mina.com.feedme.Model.Recipe;
+import mina.com.feedme.Model.RecipeModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,7 +31,7 @@ public class MainFragment extends Fragment implements RecipesAdapter.RecipeOnCli
     public static final String RECIPE_INGREDIENTS_KEY = "ingredients_value";
     public static final String RECIPE_STEPS_KEY = "steps_value";
 
-    private List<Recipe> mRecipes;
+    private List<RecipeModel> mRecipes;
     RecipesAdapter recipesAdapter;
 
     RecyclerView recipesRecyclerView;
@@ -82,7 +82,7 @@ public class MainFragment extends Fragment implements RecipesAdapter.RecipeOnCli
 
 
 
-    public void resetFragmentArray(List<Recipe> recipes) {
+    public void resetFragmentArray(List<RecipeModel> recipes) {
         Log.i("FragmentActivity","00000000000000000");
         mRecipes.clear();
         mRecipes.addAll(recipes);
@@ -99,7 +99,7 @@ public class MainFragment extends Fragment implements RecipesAdapter.RecipeOnCli
 
     @Override
     public void onClick(int position) {
-        Recipe selectedRecipe = mRecipes.get(position);
+        RecipeModel selectedRecipe = mRecipes.get(position);
         Intent detailIntent = new Intent(getContext(), RecipeActivity.class);
         detailIntent.putExtra(RECIPE_KEY, selectedRecipe);
         detailIntent.putParcelableArrayListExtra(RECIPE_STEPS_KEY, (ArrayList<? extends Parcelable>) selectedRecipe.getmSteps());

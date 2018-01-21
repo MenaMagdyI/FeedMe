@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import mina.com.feedme.Model.Step;
+import mina.com.feedme.Model.StepModel;
 
 public class StepActivity extends AppCompatActivity {
 
@@ -19,7 +19,7 @@ public class StepActivity extends AppCompatActivity {
         stepFragment = new StepFragment();
 
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.step_fragment_container, stepFragment)
+                .add(R.id.step_container, stepFragment)
                 .commit();
     }
 
@@ -31,7 +31,7 @@ public class StepActivity extends AppCompatActivity {
 
     private void TransferFragmentData() {
         Intent sentIntent = getIntent();
-        Step sentStep = sentIntent.getParcelableExtra(RecipeFragment.SELECTED_STEP);
+        StepModel sentStep = sentIntent.getParcelableExtra(RecipeFragment.SELECTED_STEP);
         String stepDescription = sentStep.getmDescription();
         String imageUri = sentStep.getmThumbnailUrl();
         String videoUri = sentStep.getmVideoUrl();

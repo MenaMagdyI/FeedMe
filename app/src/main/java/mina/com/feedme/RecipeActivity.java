@@ -12,17 +12,17 @@ import java.util.List;
 
 import mina.com.feedme.DataBase.RecipesContentProvider;
 import mina.com.feedme.DataBase.RecipesContract;
-import mina.com.feedme.Model.Ingredient;
-import mina.com.feedme.Model.Recipe;
-import mina.com.feedme.Model.Step;
+import mina.com.feedme.Model.IngredientModel;
+import mina.com.feedme.Model.RecipeModel;
+import mina.com.feedme.Model.StepModel;
 
 public class RecipeActivity extends AppCompatActivity {
 
     private StepFragment stepFragment;
-    private List<Step> steps;
+    private List<StepModel> steps;
     private boolean existInDB;
-    private Recipe mCurrentRecipe;
-    private List<Ingredient> mIngredients;
+    private RecipeModel mCurrentRecipe;
+    private List<IngredientModel> mIngredients;
     private Menu mRecipeMenu;
 
     @Override
@@ -82,7 +82,7 @@ public class RecipeActivity extends AppCompatActivity {
 
 
     private void sendData(int position) {
-        Step selectedStep = steps.get(position);
+        StepModel selectedStep = steps.get(position);
 
         String stepDescription = selectedStep.getmDescription();
         String imageUri = selectedStep.getmThumbnailUrl();

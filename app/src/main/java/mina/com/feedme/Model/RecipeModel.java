@@ -10,15 +10,15 @@ import java.util.List;
  */
 
 
-public class Recipe implements Parcelable {
+public class RecipeModel implements Parcelable {
     private int mId;
     private String mName;
-    private List<Ingredient> mIngredients;
-    private List<Step> mSteps;
+    private List<IngredientModel> mIngredients;
+    private List<StepModel> mSteps;
     private int mServings;
     private String mImageUrl;
 
-    public Recipe(int mId, String mName, List<Ingredient> mIngredients, List<Step> mSteps, int mServings, String mImageUrl) {
+    public RecipeModel(int mId, String mName, List<IngredientModel> mIngredients, List<StepModel> mSteps, int mServings, String mImageUrl) {
         this.mId = mId;
         this.mName = mName;
         this.mIngredients = mIngredients;
@@ -27,7 +27,7 @@ public class Recipe implements Parcelable {
         this.mImageUrl = mImageUrl;
     }
 
-    protected Recipe(Parcel in) {
+    protected RecipeModel(Parcel in) {
         mId = in.readInt();
         mName = in.readString();
         mServings = in.readInt();
@@ -35,15 +35,15 @@ public class Recipe implements Parcelable {
     }
 
 
-    public static final Creator<Recipe> CREATOR = new Creator<Recipe>() {
+    public static final Creator<RecipeModel> CREATOR = new Creator<RecipeModel>() {
         @Override
-        public Recipe createFromParcel(Parcel in) {
-            return new Recipe(in);
+        public RecipeModel createFromParcel(Parcel in) {
+            return new RecipeModel(in);
         }
 
         @Override
-        public Recipe[] newArray(int size) {
-            return new Recipe[size];
+        public RecipeModel[] newArray(int size) {
+            return new RecipeModel[size];
         }
     };
 
@@ -55,11 +55,11 @@ public class Recipe implements Parcelable {
         return mName;
     }
 
-    public List<Ingredient> getmIngredients() {
+    public List<IngredientModel> getmIngredients() {
         return mIngredients;
     }
 
-    public List<Step> getmSteps() {
+    public List<StepModel> getmSteps() {
         return mSteps;
     }
 

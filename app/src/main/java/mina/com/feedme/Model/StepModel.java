@@ -7,14 +7,14 @@ import android.os.Parcelable;
  * Created by Mena on 1/10/2018.
  */
 
-public class Step implements Parcelable {
+public class StepModel implements Parcelable {
     private int mId;
     private String mShortDescription;
     private String mDescription;
     private String mVideoUrl;
     private String mThumbnailUrl;
 
-    public Step(int mId, String mShortDescription, String mDescription, String mVideoUrl, String mThumbnailUrl) {
+    public StepModel(int mId, String mShortDescription, String mDescription, String mVideoUrl, String mThumbnailUrl) {
         this.mId = mId;
         this.mShortDescription = mShortDescription;
         this.mDescription = mDescription;
@@ -22,7 +22,7 @@ public class Step implements Parcelable {
         this.mThumbnailUrl = mThumbnailUrl;
     }
 
-    protected Step(Parcel in) {
+    protected StepModel(Parcel in) {
         mId = in.readInt();
         mShortDescription = in.readString();
         mDescription = in.readString();
@@ -30,15 +30,15 @@ public class Step implements Parcelable {
         mThumbnailUrl = in.readString();
     }
 
-    public static final Creator<Step> CREATOR = new Creator<Step>() {
+    public static final Creator<StepModel> CREATOR = new Creator<StepModel>() {
         @Override
-        public Step createFromParcel(Parcel in) {
-            return new Step(in);
+        public StepModel createFromParcel(Parcel in) {
+            return new StepModel(in);
         }
 
         @Override
-        public Step[] newArray(int size) {
-            return new Step[size];
+        public StepModel[] newArray(int size) {
+            return new StepModel[size];
         }
     };
 

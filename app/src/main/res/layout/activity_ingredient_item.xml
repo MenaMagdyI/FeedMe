@@ -24,7 +24,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="2"
-            android:textSize="15sp"/>
+            android:textSize="15sp"
+            android:textColor="#5cc64c"/>
 
         <TextView
             android:id="@+id/ON_ing"
@@ -32,7 +33,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="milk"
-            android:textSize="15sp"/>
+            android:textSize="15sp"
+            android:textColor="#5cc64c"/>
 
     </LinearLayout>
 

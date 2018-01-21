@@ -2,7 +2,7 @@ package mina.com.feedme.Adapter;
 
 import com.squareup.picasso.Picasso;
 import java.util.List;
-import mina.com.feedme.Model.Recipe;
+import mina.com.feedme.Model.RecipeModel;
 import mina.com.feedme.R;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
@@ -20,14 +20,14 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.MyRecipe
 
 
     private RecipeOnClickListener mOnClickListener;
-    private List<Recipe> RecipesList;
+    private List<RecipeModel> RecipesList;
 
 
     public interface RecipeOnClickListener {
         void onClick(int position);
     }
 
-    public RecipesAdapter(List<Recipe> recipes, RecipeOnClickListener clickListener) {
+    public RecipesAdapter(List<RecipeModel> recipes, RecipeOnClickListener clickListener) {
         this.RecipesList = recipes;
         this.mOnClickListener = clickListener;
     }
@@ -68,7 +68,7 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.MyRecipe
         }
 
         public void bind(int position) {
-            Recipe currentRecipe = RecipesList.get(position);
+            RecipeModel currentRecipe = RecipesList.get(position);
             mRecipeName.setText(currentRecipe.getmName());
 
             Picasso.with(mRecipePhoto.getContext())

@@ -22,6 +22,20 @@
         <activity android:name=".RecipeActivity" />
         <activity android:name=".StepActivity"></activity>
 
+        <receiver android:name=".widget.FeedmeWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget" />
+        </receiver>
+
+        <service
+            android:name=".widget.ListWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"/>
+
         <provider
             android:authorities="mina.com.feedme"
             android:name=".DataBase.generated.RecipesContentProvider"

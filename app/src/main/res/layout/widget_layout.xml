@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:id="@+id/widget_container"
+    android:background="#FFFFFF">
+
+    <TextView
+                android:id="@+id/widget_recipe_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textSize="20sp"
+                android:visibility="gone"
+                tools:text="Apple pie"
+                android:textColor="#4eed70"/>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ListView
+                    android:id="@+id/widget_ingredients_list_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                     />
+
+                <TextView
+                    android:id="@+id/empty_widget_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="No Favorite Selected" />
+            </FrameLayout>
+
+
+
+
+</LinearLayout>

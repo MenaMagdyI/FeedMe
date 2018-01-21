@@ -1,6 +1,8 @@
 package mina.com.feedme;
 
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,9 +27,10 @@ import mina.com.feedme.Adapter.IngredientsAdapter;
 import mina.com.feedme.Adapter.StepsAdapter;
 import mina.com.feedme.DataBase.RecipesContentProvider;
 import mina.com.feedme.DataBase.RecipesContract;
-import mina.com.feedme.Model.Ingredient;
-import mina.com.feedme.Model.Recipe;
-import mina.com.feedme.Model.Step;
+import mina.com.feedme.Model.IngredientModel;
+import mina.com.feedme.Model.RecipeModel;
+import mina.com.feedme.Model.StepModel;
+import mina.com.feedme.widget.FeedmeWidget;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,12 +57,12 @@ public class RecipeFragment extends Fragment implements StepsAdapter.StepOnClick
     private String mRecipeTitle;
     private boolean mDBstatus;
 
-    private List<Ingredient> mIngredients;
-    private List<Step> mSteps;
+    private List<IngredientModel> mIngredients;
+    private List<StepModel> mSteps;
 
     private IngredientsAdapter mIngredientsAdapter;
     private StepsAdapter mStepsAdapter;
-    private Recipe mCurrentRecipe;
+    private RecipeModel mCurrentRecipe;
 
     private UpdateStepFragment updateFragment;
     private int mLastClickedPosition;
@@ -77,7 +81,7 @@ public class RecipeFragment extends Fragment implements StepsAdapter.StepOnClick
             itemView.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), android.R.color.holo_blue_dark));
             mLastClickedPosition = position;
         } else {
-            Step selectedStep = mSteps.get(position);
+            StepModel selectedStep = mSteps.get(position);
             Intent stepIntent = new Intent(getContext(), StepActivity.class);
             stepIntent.putExtra(SELECTED_STEP, selectedStep);
 
@@ -137,6 +141,7 @@ public class RecipeFragment extends Fragment implements StepsAdapter.StepOnClick
 
 
                         Toast.makeText(getContext(), temp[0], Toast.LENGTH_SHORT).show();
+                        changeWidget();
 
                     }
                 });
@@ -159,17 +164,17 @@ public class RecipeFragment extends Fragment implements StepsAdapter.StepOnClick
     }
 
 
-    public void setIngredients(List<Ingredient> ingredients) {
+    public void setIngredients(List<IngredientModel> ingredients) {
         mIngredients.addAll(ingredients);
         mIngredientsAdapter.notifyDataSetChanged();
     }
 
-    public void setSteps(List<Step> steps) {
+    public void setSteps(List<StepModel> steps) {
         mSteps.addAll(steps);
         mStepsAdapter.notifyDataSetChanged();
     }
 
-    public void getRecipeObject(Recipe object){
+    public void getRecipeObject(RecipeModel object){
         mCurrentRecipe = object;
 
     }
@@ -193,6 +198,29 @@ public class RecipeFragment extends Fragment implements StepsAdapter.StepOnClick
         getActivity().getApplicationContext().getContentResolver().delete(RecipesContentProvider.Ingredients.INGREDIENTS, null, null);
         insertIntoProvider();
 
+    }
+
+
+    private void changeWidget() {
+        getActivity().getApplicationContext().getContentResolver().delete(RecipesContentProvider.Ingredients.INGREDIENTS, null, null);
+
+        AppWidgetManager widgetManager = AppWidgetManager.getInstance(getActivity().getApplicationContext());
+        int[] appWidgetIds = widgetManager.getAppWidgetIds(new ComponentName(getActivity().getApplicationContext(), FeedmeWidget.class));
+        RemoteViews remoteViews = new RemoteViews(getActivity().getApplicationContext().getPackageName(), R.layout.widget_layout);
+
+        if (!mDBstatus) {
+            insertIntoProvider();
+            remoteViews.setViewVisibility(R.id.widget_recipe_title, View.VISIBLE);
+            remoteViews.setTextViewText(R.id.widget_recipe_title, mCurrentRecipe.getmName());
+            mDBstatus = true;
+        } else {
+            remoteViews.setViewVisibility(R.id.widget_recipe_title, View.GONE);
+            mDBstatus = false;
+        }
+
+
+        widgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_ingredients_list_view);
+        widgetManager.updateAppWidget(appWidgetIds, remoteViews);
     }
 
 

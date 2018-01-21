@@ -9,7 +9,7 @@ import android.widget.TextView;
 import java.util.List;
 
 
-import mina.com.feedme.Model.Ingredient;
+import mina.com.feedme.Model.IngredientModel;
 import mina.com.feedme.R;
 
 /**
@@ -18,9 +18,9 @@ import mina.com.feedme.R;
 
 public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.IngredientsViewHolder> {
 
-    private List<Ingredient> mIngredients;
+    private List<IngredientModel> mIngredients;
 
-    public IngredientsAdapter(List<Ingredient> mIngredients) {
+    public IngredientsAdapter(List<IngredientModel> mIngredients) {
 
         this.mIngredients = mIngredients;
     }
@@ -57,7 +57,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
         }
 
         public void bind(int position) {
-            Ingredient currentIngredient = mIngredients.get(position);
+            IngredientModel currentIngredient = mIngredients.get(position);
             String ingredient = currentIngredient.getmIngredient();
             double quantity = currentIngredient.getmQuantity();
             String measure = currentIngredient.getmMeasure();

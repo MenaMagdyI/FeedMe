@@ -15,17 +15,17 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import mina.com.feedme.Model.Recipe;
+import mina.com.feedme.Model.RecipeModel;
 import mina.com.feedme.Utils.JsonUtils;
 import mina.com.feedme.Utils.NetworkUtils;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Recipe>> {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<RecipeModel>> {
 
 
     Context mContext;
     ProgressBar loadingIndicator;
     MainFragment mainFragment;
-    private List<Recipe> mRecipes;
+    private List<RecipeModel> mRecipes;
     public static final int RECIPES_LOADER_ID = 1;
 
 
@@ -57,8 +57,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
 
     @Override
-    public Loader<List<Recipe>> onCreateLoader(int id, Bundle args) {
-        return new AsyncTaskLoader<List<Recipe>>(mContext) {
+    public Loader<List<RecipeModel>> onCreateLoader(int id, Bundle args) {
+        return new AsyncTaskLoader<List<RecipeModel>>(mContext) {
             @Override
             protected void onStartLoading() {
                 super.onStartLoading();
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
 
             @Override
-            public List<Recipe> loadInBackground() {
+            public List<RecipeModel> loadInBackground() {
 
                 Log.i("MainActivity","555555555555555555555");
                 String recipes_Url = getString(R.string.recipes_url);
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     @Override
-    public void onLoadFinished(Loader<List<Recipe>> loader, List<Recipe> data) {
+    public void onLoadFinished(Loader<List<RecipeModel>> loader, List<RecipeModel> data) {
         mRecipes.clear();
         mRecipes.addAll(data);
         Log.i("mainActivity","91919191919191919");
@@ -92,6 +92,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     @Override
-    public void onLoaderReset(Loader<List<Recipe>> loader) {
+    public void onLoaderReset(Loader<List<RecipeModel>> loader) {
     }
 }
