@@ -19,7 +19,7 @@ public class StepActivity extends AppCompatActivity {
         stepFragment = new StepFragment();
 
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.step_container, stepFragment)
+                .replace(R.id.step_container, stepFragment)
                 .commit();
     }
 

@@ -6,8 +6,10 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +41,7 @@ public class StepFragment extends Fragment {
     ImageView imageDescription;
     TextView descriptionTextView;
     private SimpleExoPlayer mExoPlayer;
-    long position;
+    long position,temp;
     String videoURIGlobal;
     String SELECTED_POSITION = "EXO_POSITION";
 
@@ -51,9 +53,11 @@ public class StepFragment extends Fragment {
         imageDescription = (ImageView) rootView.findViewById(R.id.image_instructions);
         descriptionTextView = (TextView) rootView.findViewById(R.id.description);
 
+        Log.i("POSITIONNNNN-----------",String.valueOf(position));
         position = C.TIME_UNSET;
         if (savedInstanceState != null) {
             position = savedInstanceState.getLong(SELECTED_POSITION, C.TIME_UNSET);
+            Log.i("POSITIONNNNN11111111111",String.valueOf(position));
         }
 
         return rootView;
@@ -77,7 +81,9 @@ public class StepFragment extends Fragment {
             videoInstructions.setPlayer(mExoPlayer);
             Uri mediaUri = Uri.parse(videoURL);
             MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(getContext(), "BakingStep"), new DefaultExtractorsFactory(), null, null);
+            Log.i("POSITIONNNNN3333333333",String.valueOf(position));
             if (position != C.TIME_UNSET) mExoPlayer.seekTo(position);
+            Log.i("EXxxxxxxxxxxx",mediaUri.toString());
             mExoPlayer.prepare(mediaSource);
         }
     }
@@ -96,7 +102,18 @@ public class StepFragment extends Fragment {
                     .into(imageDescription);
             imageDescription.setVisibility(View.VISIBLE);
         }
+    }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            position = savedInstanceState.getLong(SELECTED_POSITION, C.TIME_UNSET);
+            temp = position;
+            Log.i("temp1111111111111",String.valueOf(temp));
+
+        }
     }
 
     @Override
@@ -142,5 +159,13 @@ public class StepFragment extends Fragment {
     }
 
 
-
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            position = savedInstanceState.getLong(SELECTED_POSITION, C.TIME_UNSET);
+            Log.i("POSITIONNNNN22222222222",String.valueOf(position));
+            Log.i("temp22222222222",String.valueOf(temp));
+        }
+    }
 }

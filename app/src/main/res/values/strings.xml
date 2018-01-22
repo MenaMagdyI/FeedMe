@@ -3,7 +3,7 @@
 
 
     <!-- Recipes URL -->
-    <string name="recipes_url">https://d17h27t6h515a5.cloudfront.net/topher/2017/March/58d1537b_baking/baking.json</string>
+    <string name="recipes_url">https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json</string>
 
     <!-- JSON KEYS -->
     <string name="recipe_id">id</string>
