@@ -16,10 +16,18 @@ public class StepActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step);
 
-        stepFragment = new StepFragment();
+       /* stepFragment = new StepFragment();
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.step_container, stepFragment)
+                .commit();*/
+
+        stepFragment = (StepFragment) getSupportFragmentManager().findFragmentByTag("stepFragment");
+        if (stepFragment == null) {
+            stepFragment = new StepFragment();
+        }
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.step_container, stepFragment, "stepFragment")
                 .commit();
     }
 

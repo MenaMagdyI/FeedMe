@@ -36,11 +36,17 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Log.i("MainActivity","just Created !!!!!");
         mContext = MainActivity.this;
         mRecipes = new ArrayList<>();
-        mainFragment = new MainFragment();
-
         loadingIndicator = (ProgressBar) findViewById(R.id.loading_indicator);
 
-        getSupportFragmentManager().beginTransaction().add(R.id.container, mainFragment).commit();
+        mainFragment = (MainFragment) getSupportFragmentManager().findFragmentByTag("MainFragment");
+        if (mainFragment == null) {
+            mainFragment = new MainFragment();
+        }
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, mainFragment,"MainFragment").commit();
+
+
+
+
 
 
         if (NetworkUtils.isConnected(mContext)) {

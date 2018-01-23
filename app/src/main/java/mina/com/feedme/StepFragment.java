@@ -41,9 +41,11 @@ public class StepFragment extends Fragment {
     ImageView imageDescription;
     TextView descriptionTextView;
     private SimpleExoPlayer mExoPlayer;
-    long position,temp;
+    private long position,temp;
     String videoURIGlobal;
-    String SELECTED_POSITION = "EXO_POSITION";
+    private final String SELECTED_POSITION = "EXO_POSITION";
+    private final String PLAY_STATE = "state_of_play";
+    private boolean state;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,6 +58,7 @@ public class StepFragment extends Fragment {
         Log.i("POSITIONNNNN-----------",String.valueOf(position));
         position = C.TIME_UNSET;
         if (savedInstanceState != null) {
+            state = savedInstanceState.getBoolean(PLAY_STATE,state);
             position = savedInstanceState.getLong(SELECTED_POSITION, C.TIME_UNSET);
             Log.i("POSITIONNNNN11111111111",String.valueOf(position));
         }
@@ -83,6 +86,7 @@ public class StepFragment extends Fragment {
             MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(getContext(), "BakingStep"), new DefaultExtractorsFactory(), null, null);
             Log.i("POSITIONNNNN3333333333",String.valueOf(position));
             if (position != C.TIME_UNSET) mExoPlayer.seekTo(position);
+            mExoPlayer.setPlayWhenReady(state);
             Log.i("EXxxxxxxxxxxx",mediaUri.toString());
             mExoPlayer.prepare(mediaSource);
         }
@@ -109,6 +113,7 @@ public class StepFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState != null) {
+            state = savedInstanceState.getBoolean(PLAY_STATE,state);
             position = savedInstanceState.getLong(SELECTED_POSITION, C.TIME_UNSET);
             temp = position;
             Log.i("temp1111111111111",String.valueOf(temp));
@@ -136,11 +141,14 @@ public class StepFragment extends Fragment {
         super.onPause();
         if (mExoPlayer != null) {
             position = mExoPlayer.getCurrentPosition();
+            state = mExoPlayer.getPlayWhenReady();
             mExoPlayer.stop();
             mExoPlayer.release();
             mExoPlayer = null;
+
         }
     }
+
 
 
     @Override
@@ -155,7 +163,9 @@ public class StepFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
+        outState.putBoolean(PLAY_STATE,state);
         outState.putLong(SELECTED_POSITION,position);
+
     }
 
 
@@ -163,6 +173,7 @@ public class StepFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
+            state = savedInstanceState.getBoolean(PLAY_STATE,state);
             position = savedInstanceState.getLong(SELECTED_POSITION, C.TIME_UNSET);
             Log.i("POSITIONNNNN22222222222",String.valueOf(position));
             Log.i("temp22222222222",String.valueOf(temp));

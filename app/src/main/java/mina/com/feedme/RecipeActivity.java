@@ -31,7 +31,6 @@ public class RecipeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recipe);
 
         final Intent sentIntent = getIntent();
-
         mCurrentRecipe = sentIntent.getParcelableExtra(MainFragment.RECIPE_KEY);
         mIngredients = sentIntent.getParcelableArrayListExtra(MainFragment.RECIPE_INGREDIENTS_KEY);
         steps = sentIntent.getParcelableArrayListExtra(MainFragment.RECIPE_STEPS_KEY);
