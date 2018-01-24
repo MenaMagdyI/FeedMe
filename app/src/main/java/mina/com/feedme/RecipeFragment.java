@@ -10,6 +10,7 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -60,9 +61,9 @@ public class RecipeFragment extends Fragment implements StepsAdapter.StepOnClick
     private String mRecipeTitle;
     private boolean mDBstatus;
 
-    public static int scrollX = 0;
-    public static int scrollY = -1;
-    ScrollView mScrollview;
+   // public static int scrollX = 0;
+   // public static int scrollY = -1;
+    private NestedScrollView mScrollview;
 
     private List<IngredientModel> mIngredients;
     private List<StepModel> mSteps;
@@ -120,8 +121,8 @@ public class RecipeFragment extends Fragment implements StepsAdapter.StepOnClick
     @Override
     public void onPause() {
         super.onPause();
-        scrollX = mScrollview.getScrollX();
-        scrollY = mScrollview.getScrollY();
+       // scrollX = mScrollview.getScrollX();
+       // scrollY = mScrollview.getScrollY();
     }
 
     @Override
@@ -131,7 +132,7 @@ public class RecipeFragment extends Fragment implements StepsAdapter.StepOnClick
         recipeTitleTextView = (TextView) rootView.findViewById(R.id.recipe_title);
         ingredientsRecyclerView = (RecyclerView) rootView.findViewById(R.id.ingredients_recycler_view);
         stepsRecyclerView = (RecyclerView) rootView.findViewById(R.id.steps_recycler_view);
-        mScrollview = (ScrollView) rootView.findViewById(R.id.mainScrollView);
+        mScrollview = (NestedScrollView) rootView.findViewById(R.id.mainScrollView);
         MaterialFavoriteButton materialFavoriteButtonNice = (MaterialFavoriteButton) rootView.findViewById(R.id.favorite_nice);
 
         if (savedInstanceState != null){
@@ -258,8 +259,8 @@ public class RecipeFragment extends Fragment implements StepsAdapter.StepOnClick
         outState.putParcelable("state1", mListState);
         outState.putParcelable("state2", mListState2);
 
-        outState.putIntArray("SCROLL_POSITION",
-                new int[]{mScrollview.getScrollX(), mScrollview.getScrollY()});
+       // outState.putIntArray("SCROLL_POSITION",
+         //       new int[]{mScrollview.getScrollX(), mScrollview.getScrollY()});
     }
 
     @Override
@@ -274,12 +275,12 @@ public class RecipeFragment extends Fragment implements StepsAdapter.StepOnClick
             ingredientsLayoutManager.onRestoreInstanceState(mListState);
         }
 
-        mScrollview.post(new Runnable() {
+      /*  mScrollview.post(new Runnable() {
             @Override
             public void run() {
                 mScrollview.scrollTo(scrollX, scrollY);
             }
-        });
+        });*/
     }
 
 

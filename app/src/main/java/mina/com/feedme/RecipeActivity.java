@@ -62,9 +62,19 @@ public class RecipeActivity extends AppCompatActivity {
 
         View tabletView = findViewById(R.id.tablet_fragment_step_container);
         if (tabletView != null) {
-            stepFragment = new StepFragment();
+          /*  stepFragment = new StepFragment();
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.tablet_fragment_step_container, stepFragment)
+                    .commit();*/
+
+
+            stepFragment = (StepFragment) getSupportFragmentManager().findFragmentByTag("stepFragment");
+            if (stepFragment == null) {
+                stepFragment = new StepFragment();
+            }
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.tablet_fragment_step_container, stepFragment, "stepFragment")
                     .commit();
 
             recipeFragment.setUpdateFragment(new RecipeFragment.UpdateStepFragment() {
