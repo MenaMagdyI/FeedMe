@@ -34,7 +34,7 @@ public class MainFragment extends Fragment implements RecipesAdapter.RecipeOnCli
     private List<RecipeModel> mRecipes;
     RecipesAdapter recipesAdapter;
 
-    private StatefulRecyclerView recipesRecyclerView;
+    private RecyclerView recipesRecyclerView;
     TextView emptyListView;
 
 
@@ -49,7 +49,7 @@ public class MainFragment extends Fragment implements RecipesAdapter.RecipeOnCli
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         mRecipes = new ArrayList<>();
-        recipesRecyclerView = (StatefulRecyclerView) rootView.findViewById(R.id.fragment_recycler_view);
+        recipesRecyclerView = (RecyclerView) rootView.findViewById(R.id.fragment_recycler_view);
         emptyListView = (TextView) rootView.findViewById(R.id.empty_recipes);
         Log.i("FragmentActivity","7777777777777");
 

@@ -43,6 +43,7 @@ public class StepActivity extends AppCompatActivity {
         String stepDescription = sentStep.getmDescription();
         String imageUri = sentStep.getmThumbnailUrl();
         String videoUri = sentStep.getmVideoUrl();
+        stepFragment.setvalues(stepDescription,imageUri,videoUri);
         stepFragment.setDescription(stepDescription);
         stepFragment.setImageView(imageUri);
         stepFragment.getVideoPlayerStandBY(videoUri);

@@ -21,8 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".RecipeActivity"
-            android:parentActivityName="mina.com.feedme.MainActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden">
+            android:parentActivityName="mina.com.feedme.MainActivity">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

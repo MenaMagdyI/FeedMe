@@ -35,7 +35,11 @@ public class RecipeActivity extends AppCompatActivity {
         mIngredients = sentIntent.getParcelableArrayListExtra(MainFragment.RECIPE_INGREDIENTS_KEY);
         steps = sentIntent.getParcelableArrayListExtra(MainFragment.RECIPE_STEPS_KEY);
 
-        RecipeFragment recipeFragment = new RecipeFragment();
+        RecipeFragment recipeFragment = (RecipeFragment) getSupportFragmentManager().findFragmentByTag("recipeFragment");
+        if (recipeFragment == null) {
+            recipeFragment = new RecipeFragment();
+        }
+
         String selection = RecipesContract.IngredientEntry.RECIPE_ID + "=?";
         String[] selectionArgs = new String[]{String.valueOf(mCurrentRecipe.getmId())};
         Cursor cursor = getContentResolver().query(RecipesContentProvider.Ingredients.INGREDIENTS, null, selection, selectionArgs, null);
@@ -50,28 +54,26 @@ public class RecipeActivity extends AppCompatActivity {
         Log.i("RRRRRRRRRR",mCurrentRecipe.getmName());
         recipeFragment.setRecipeTitle(mCurrentRecipe.getmName());
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_recipe_container, recipeFragment)
-                .commit();
+
 
         recipeFragment.setIngredients(mIngredients);
         recipeFragment.setSteps(steps);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_recipe_container, recipeFragment,"recipeFragment")
+                .commit();
 
 
 
 
         View tabletView = findViewById(R.id.tablet_fragment_step_container);
         if (tabletView != null) {
-          /*  stepFragment = new StepFragment();
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.tablet_fragment_step_container, stepFragment)
-                    .commit();*/
-
 
             stepFragment = (StepFragment) getSupportFragmentManager().findFragmentByTag("stepFragment");
             if (stepFragment == null) {
                 stepFragment = new StepFragment();
             }
+
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.tablet_fragment_step_container, stepFragment, "stepFragment")
@@ -82,10 +84,15 @@ public class RecipeActivity extends AppCompatActivity {
                 public void update(int position) {
                     if (stepFragment != null) {
                         sendData(position);
+                        stepFragment.setRetainInstance(true);
                     }
                 }
             });
+
+
         }
+
+
 
     }
 
@@ -96,6 +103,7 @@ public class RecipeActivity extends AppCompatActivity {
         String stepDescription = selectedStep.getmDescription();
         String imageUri = selectedStep.getmThumbnailUrl();
         String videoUri = selectedStep.getmVideoUrl();
+        stepFragment.setvalues(stepDescription,imageUri,videoUri);
         stepFragment.setDescription(stepDescription);
         stepFragment.setImageView(imageUri);
         stepFragment.getVideoPlayerStandBY(videoUri);

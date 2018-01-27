@@ -43,9 +43,20 @@ public class StepFragment extends Fragment {
     private SimpleExoPlayer mExoPlayer;
     private long position,temp;
     String videoURIGlobal;
+    private boolean state;
+
     private final String SELECTED_POSITION = "EXO_POSITION";
     private final String PLAY_STATE = "state_of_play";
-    private boolean state;
+
+    private final String S_DES = "description";
+    private final String S_img = "imageURi";
+    private final String S_vid = "videoUri";
+
+
+
+    private String Sdescreption;
+    private String SimageURL;
+    private String SvideoURL;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,6 +71,10 @@ public class StepFragment extends Fragment {
         if (savedInstanceState != null) {
             state = savedInstanceState.getBoolean(PLAY_STATE,state);
             position = savedInstanceState.getLong(SELECTED_POSITION, C.TIME_UNSET);
+            Sdescreption = savedInstanceState.getString(S_DES);
+            SimageURL = savedInstanceState.getString(S_img);
+            SvideoURL = savedInstanceState.getString(SvideoURL);
+            setupviews();
             Log.i("POSITIONNNNN11111111111",String.valueOf(position));
         }
 
@@ -67,6 +82,7 @@ public class StepFragment extends Fragment {
     }
 
     public void getVideoPlayerStandBY(String videoURL){
+
         if (!TextUtils.isEmpty(videoURL)){
             if (videoURL != null){
                 videoURIGlobal = videoURL;
@@ -92,15 +108,26 @@ public class StepFragment extends Fragment {
         }
     }
 
-    public void setDescription(String description) {
+    public void setvalues(String des, String img, String vid){
+        Sdescreption = des;
+        SimageURL = img;
+        SvideoURL = vid;
+    }
 
-        descriptionTextView.setText(description);
+    public void setupviews(){
+        setImageView(SimageURL);
+        setDescription(Sdescreption);
+
+    }
+
+    public void setDescription(String description) {
+        descriptionTextView.setText(Sdescreption);
     }
 
     public void setImageView(String imageUrl){
-        if (imageUrl != null && !TextUtils.isEmpty(imageUrl)) {
+        if (SimageURL != null && !TextUtils.isEmpty(SimageURL)) {
             Picasso.with(getContext())
-                    .load(Uri.parse(imageUrl))
+                    .load(Uri.parse(SimageURL))
                     .placeholder(R.drawable.content)
                     .error(R.drawable.content)
                     .into(imageDescription);
@@ -116,6 +143,10 @@ public class StepFragment extends Fragment {
             state = savedInstanceState.getBoolean(PLAY_STATE,state);
             position = savedInstanceState.getLong(SELECTED_POSITION, C.TIME_UNSET);
             temp = position;
+            Sdescreption = savedInstanceState.getString(S_DES);
+            SimageURL = savedInstanceState.getString(S_img);
+            SvideoURL = savedInstanceState.getString(SvideoURL);
+            //setupviews();
             Log.i("temp1111111111111",String.valueOf(temp));
 
         }
@@ -166,6 +197,10 @@ public class StepFragment extends Fragment {
         outState.putBoolean(PLAY_STATE,state);
         outState.putLong(SELECTED_POSITION,position);
 
+        outState.putString(S_DES,Sdescreption);
+        outState.putString(S_img,SimageURL);
+        outState.putString(S_vid,SvideoURL);
+
     }
 
 
@@ -177,6 +212,10 @@ public class StepFragment extends Fragment {
             position = savedInstanceState.getLong(SELECTED_POSITION, C.TIME_UNSET);
             Log.i("POSITIONNNNN22222222222",String.valueOf(position));
             Log.i("temp22222222222",String.valueOf(temp));
+            Sdescreption = savedInstanceState.getString(S_DES);
+            SimageURL = savedInstanceState.getString(S_img);
+            SvideoURL = savedInstanceState.getString(SvideoURL);
+            setupviews();
         }
     }
 }
