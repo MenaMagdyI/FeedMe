@@ -166,11 +166,13 @@ public class RecipeFragment extends Fragment implements StepsAdapter.StepOnClick
                     public void onAnimationEnd(MaterialFavoriteButton buttonView, boolean favorite) {
 
 
-                        Toast.makeText(getContext(), temp[0], Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getContext(), temp[0], Toast.LENGTH_SHORT).show();
                         changeWidget();
 
                     }
                 });
+
+
 
         recipeTitleTextView.setText(mRecipeTitle);
 
@@ -226,6 +228,14 @@ public class RecipeFragment extends Fragment implements StepsAdapter.StepOnClick
 
     }
 
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+         if (savedInstanceState == null){
+             mScrollview.smoothScrollTo (-1, -1);
+        }
+    }
 
     private void changeWidget() {
         getActivity().getApplicationContext().getContentResolver().delete(RecipesContentProvider.Ingredients.INGREDIENTS, null, null);

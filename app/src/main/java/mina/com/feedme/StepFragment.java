@@ -217,5 +217,7 @@ public class StepFragment extends Fragment {
             SvideoURL = savedInstanceState.getString(SvideoURL);
             setupviews();
         }
+
+
     }
 }
